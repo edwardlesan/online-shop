@@ -1,8 +1,18 @@
+* {
+  position: relative;
+}
+
 .cart {
   display: flex;
   flex-direction: column;
   gap: 32px;
   padding: 128px;
+}
+
+.cart-title {
+  text-align: center;
+  font-size: 36px;
+  text-transform: uppercase;
 }
 
 .cart .product-card {
@@ -63,4 +73,15 @@
 
 .cart .total p {
   font-size: 22px;
+}
+
+.no-prods-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-prods-msg {
+  margin-bottom: 40px;
 }

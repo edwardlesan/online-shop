@@ -25,3 +25,26 @@
   display: flex;
   align-items: center;
 }
+
+.shopping-cart {
+  position: relative;
+}
+
+.cart-prod-nr {
+  height: 30px;
+  width: 30px;
+  font-size: 14px;
+
+  position: absolute;
+  top: 10px;
+  right: 88px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: white;
+  background-color: red;
+  border: 1px solid red;
+  border-radius: 50px;
+}

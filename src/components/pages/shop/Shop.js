@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import "./Shop.css";
 import axios from "axios";
 import { Cartcontext } from "../../Context";
+import { Link } from "react-router-dom";
 
 const Shop = () => {
   const [product, setProduct] = useState([]);
@@ -25,6 +26,7 @@ const Shop = () => {
       <div className="products">
         {product.map((item, index) => {
           item.quantity = 1;
+          console.log(item, "message");
           return (
             <>
               <div className="product" key={index}>
@@ -40,12 +42,17 @@ const Shop = () => {
                     <p className="product-price">
                       <b>${item.price}</b>
                     </p>
-                    <button
-                      onClick={() => dispatch({ type: "ADD", payload: item })}
-                      className="add-to-cart"
-                    >
-                      Add to Cart
-                    </button>
+                    <div className="button-container">
+                      <Link to={`/${item.id}`} className="view-item">
+                        View product
+                      </Link>
+                      <button
+                        onClick={() => dispatch({ type: "ADD", payload: item })}
+                        className="add-to-cart"
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
