@@ -9,11 +9,13 @@ const Cart = () => {
   const state = globalState.state;
   const dispatch = globalState.dispatch;
 
+  console.log("state from the cart", state);
+
   const total = state.reduce((total, item) => {
     return total + item.price * item.quantity;
   }, 0);
 
-  const totalQuantity = state.reduce((totalQuantity, item) => {
+  var totalQuantity = state.reduce((totalQuantity, item) => {
     return totalQuantity + item.quantity;
   }, 0);
 
@@ -40,7 +42,7 @@ const Cart = () => {
         <NoItemsMessage />
       ) : (
         state.map((item, index) => (
-          <div className="product-card" key={index}>
+          <div className="product-card" key={index + item.title}>
             <img
               className="product-img"
               src={item.image}

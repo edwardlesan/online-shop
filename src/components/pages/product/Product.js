@@ -4,6 +4,21 @@ import { Cartcontext } from "../../Context";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./Product.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const notify = () => {
+  toast.success("Product added succesfully!", {
+    position: "top-right",
+    autoClose: 1000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+  });
+};
 
 const Product = () => {
   const { id } = useParams();
@@ -11,7 +26,16 @@ const Product = () => {
   const [loading, setLoading] = useState(false);
 
   const globalState = useContext(Cartcontext);
+  const state = globalState.state;
   const dispatch = globalState.dispatch;
+
+  var totalQuantity = state.reduce((totalQuantity, item) => {
+    return totalQuantity + item.quantity;
+  }, 0);
+
+  useEffect(() => {
+    globalState.setTotalQuantity(totalQuantity);
+  }, [totalQuantity]);
 
   useEffect(() => {
     const getProduct = async () => {
@@ -25,7 +49,7 @@ const Product = () => {
   }, []);
 
   const Loading = () => {
-    return <>Loading...</>;
+    return <div className="loading-product">Loading...</div>;
   };
 
   const ShowProduct = () => {
@@ -46,7 +70,12 @@ const Product = () => {
                 </Link>
                 <button
                   className="add-to-cart"
-                  onClick={() => dispatch({ type: "ADD", payload: product })}
+                  onClick={() => {
+                    console.log("----------- product", product);
+                    dispatch({ type: "ADD", payload: product });
+                    notify();
+                    totalQuantity++;
+                  }}
                 >
                   Add to Cart
                 </button>
@@ -63,6 +92,7 @@ const Product = () => {
       <div className="container">
         <div className="row">{loading ? <Loading /> : <ShowProduct />}</div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

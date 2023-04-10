@@ -3,6 +3,21 @@ import "./Shop.css";
 import axios from "axios";
 import { Cartcontext } from "../../Context";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const notify = () => {
+  toast.success("Product added succesfully!", {
+    position: "top-right",
+    autoClose: 1000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+  });
+};
 
 const Shop = () => {
   const [product, setProduct] = useState([]);
@@ -19,7 +34,16 @@ const Shop = () => {
   };
 
   const globalState = useContext(Cartcontext);
+  const state = globalState.state;
   const dispatch = globalState.dispatch;
+
+  var totalQuantity = state.reduce((totalQuantity, item) => {
+    return totalQuantity + item.quantity;
+  }, 0);
+
+  useEffect(() => {
+    globalState.setTotalQuantity(totalQuantity);
+  }, [totalQuantity]);
 
   return (
     <div className="shop">
@@ -30,11 +54,13 @@ const Shop = () => {
           return (
             <>
               <div className="product" key={index}>
-                <img
-                  src={item.image}
-                  className="product-image"
-                  alt="product-image"
-                ></img>
+                <Link to={`/${item.id}`}>
+                  <img
+                    src={item.image}
+                    className="product-image"
+                    alt="product-image"
+                  ></img>
+                </Link>
                 <div className="product-content">
                   <h5 className="product-title">{item.title}</h5>
                   <p className="product-desc">{item.description}</p>
@@ -47,7 +73,11 @@ const Shop = () => {
                         View product
                       </Link>
                       <button
-                        onClick={() => dispatch({ type: "ADD", payload: item })}
+                        onClick={() => {
+                          dispatch({ type: "ADD", payload: item });
+                          notify();
+                          totalQuantity++;
+                        }}
                         className="add-to-cart"
                       >
                         Add to Cart
@@ -56,6 +86,7 @@ const Shop = () => {
                   </div>
                 </div>
               </div>
+              <ToastContainer />
             </>
           );
         })}

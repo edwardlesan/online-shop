@@ -9,10 +9,15 @@ export const Context = (props) => {
       case "ADD":
         const tempState = state.filter((item) => action.payload.id === item.id);
         console.log("state:", state, "action", action);
+
         if (tempState.length > 0) {
           return state;
         } else {
-          return [...state, action.payload];
+          const newPayload = {
+            ...action.payload,
+            quantity: action.quantity ? action.quantity : 1,
+          };
+          return [...state, newPayload];
         }
 
       case "INCREASE":
@@ -46,6 +51,8 @@ export const Context = (props) => {
   };
   const [state, dispatch] = useReducer(reducer, []);
   const info = { state, dispatch };
+
+  console.log("+++++++++", state);
 
   return (
     <Cartcontext.Provider value={{ ...info, totalQuantity, setTotalQuantity }}>
